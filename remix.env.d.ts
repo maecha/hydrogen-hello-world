@@ -7,6 +7,7 @@ import '@total-typescript/ts-reset';
 
 import type {Storefront} from '@shopify/hydrogen';
 import type {HydrogenSession} from './server';
+import type {HydrogenCart} from '@shopify/hydrogen';
 
 declare global {
   /**
@@ -35,5 +36,6 @@ declare module '@shopify/remix-oxygen' {
     storefront: Storefront;
     session: HydrogenSession;
     waitUntil: ExecutionContext['waitUntil'];
+    cart: HydrogenCart;
   }
 }

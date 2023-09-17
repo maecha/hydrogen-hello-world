@@ -1,41 +1,21 @@
-import {type LinksFunction, type LoaderArgs} from '@shopify/remix-oxygen';
 import {
   Links,
   Meta,
   Outlet,
   Scripts,
-  LiveReload,
   ScrollRestoration,
   useLoaderData,
-  type ShouldRevalidateFunction,
 } from '@remix-run/react';
-import type {Shop} from '@shopify/hydrogen/storefront-api-types';
-import appStyles from './styles/app.css';
+import {DataFunctionArgs as DataFunctionArgsType} from '@shopify/remix-oxygen';
+import styles from './styles/app.css';
 import favicon from '../public/favicon.svg';
-import {useNonce} from '@shopify/hydrogen';
+import {Layout} from './components/Layout';
+import {Seo} from '@shopify/hydrogen';
+import {defer} from '@shopify/remix-oxygen';
 
-// This is important to avoid re-fetching root queries on sub-navigations
-export const shouldRevalidate: ShouldRevalidateFunction = ({
-  formMethod,
-  currentUrl,
-  nextUrl,
-}) => {
-  // revalidate when a mutation is performed e.g add to cart, login...
-  if (formMethod && formMethod !== 'GET') {
-    return true;
-  }
-
-  // revalidate when manually revalidating via useRevalidator
-  if (currentUrl.toString() === nextUrl.toString()) {
-    return true;
-  }
-
-  return false;
-};
-
-export const links: LinksFunction = () => {
+export const links = () => {
   return [
-    {rel: 'stylesheet', href: appStyles},
+    {rel: 'stylesheet', href: styles},
     {
       rel: 'preconnect',
       href: 'https://cdn.shopify.com',
@@ -48,32 +28,34 @@ export const links: LinksFunction = () => {
   ];
 };
 
-export async function loader({context}: LoaderArgs) {
-  const layout = await context.storefront.query<{shop: Shop}>(LAYOUT_QUERY);
-  return {layout};
+export async function loader({context, request}: DataFunctionArgsType) {
+  const {cart} = context;
+
+  return defer({
+    cart: cart.get(),
+    layout: await context.storefront.query(LAYOUT_QUERY),
+  });
 }
 
 export default function App() {
-  const nonce = useNonce();
-  const data = useLoaderData<typeof loader>();
-
+  const data = useLoaderData();
   const {name} = data.layout.shop;
 
   return (
-    <html lang="en">
+    <html lang="ja">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <Seo />
         <Meta />
         <Links />
       </head>
       <body>
-        <h1>Hello, {name}</h1>
-        <p>This is a custom storefront powered by Hydrogen</p>
-        <Outlet />
-        <ScrollRestoration nonce={nonce} />
-        <Scripts nonce={nonce} />
-        <LiveReload nonce={nonce} />
+        <Layout title={name}>
+          <Outlet />
+        </Layout>
+        <ScrollRestoration />
+        <Scripts />
       </body>
     </html>
   );
