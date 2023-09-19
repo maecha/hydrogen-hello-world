@@ -79,14 +79,14 @@ function ProductGallery({media}: ProductGalleryProps) {
             ...med.image,
             altText: med.alt || 'Product image',
           },
-        } as MediaEdge['node'];
+        } as MediaEdge['node'] & {image: MediaImage};
 
         return (
           <div
             className={`${
               i % 3 === 0 ? 'md:col-span-2' : 'md:col-span-1'
             } snap-center card-image bg-white aspect-square md:w-full w-[80vw] shadow-sm rounded`}
-            key={med.id || data.id}
+            key={med.id || data.image.id}
           >
             <MediaFile
               tabIndex={0}
