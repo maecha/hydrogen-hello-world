@@ -1,11 +1,11 @@
 import {Drawer, useDrawer} from '~/components/Drawer';
 import {CartLineItems, CartActions, CartSummary} from '~/components/Cart';
-import type {Cart as CartType} from '@shopify/hydrogen/storefront-api-types';
 import {useMatches} from '@remix-run/react';
 import {Await} from '@remix-run/react';
 import {Suspense, useEffect} from 'react';
-import {useFetchers, Fetcher} from '@remix-run/react';
+import {useFetchers} from '@remix-run/react';
 import {CartForm} from '@shopify/hydrogen';
+import type {Cart as CartType} from '@shopify/hydrogen/storefront-api-types';
 
 function CartDrawer({cart, close}: {cart: CartType; close: any}) {
   return (
