@@ -1,26 +1,28 @@
 import {useLoaderData} from '@remix-run/react';
-import {
-  json,
-  DataFunctionArgs as DataFunctionArgsType,
-} from '@shopify/remix-oxygen';
+import {json, DataFunctionArgs} from '@shopify/remix-oxygen';
 import {MediaFile, Money, ShopPayButton} from '@shopify/hydrogen-react';
 import {CartForm} from '@shopify/hydrogen';
-import type {Product, MediaImage} from '@shopify/hydrogen/storefront-api-types';
+import type {
+  Product,
+  MediaImage,
+  ProductVariant,
+  MediaEdge,
+} from '@shopify/hydrogen/storefront-api-types';
 import ProductOptions from '~/components/ProductOptions';
 
-export async function loader({params, context, request}: DataFunctionArgsType) {
+export async function loader({params, context, request}: DataFunctionArgs) {
   const {handle} = params;
   const searchParams = new URL(request.url).searchParams;
   const selectedOptions: {name: string; value: string}[] = [];
   const storeDomain = context.storefront.getShopifyDomain();
 
-  // set selected options from the query string
+  //  クエリストリングから選択されたオプションを設定する
   searchParams.forEach((value, name) => {
     selectedOptions.push({name, value});
   });
 
   const {product} = await context.storefront.query<{
-    product: Product;
+    product: Product & {selectedVariant: ProductVariant};
   }>(PRODUCT_QUERY, {
     variables: {
       handle,
@@ -43,7 +45,7 @@ function ProductGallery({media}: {media: MediaImage[]}) {
     return null;
   }
 
-  // MediaContentType
+  // MediaContentType: https://shopify.dev/docs/api/storefront/2023-07/enums/mediacontenttype
   const typeNameMap = {
     MODEL_3D: 'Model3d',
     VIDEO: 'Video',
@@ -75,14 +77,14 @@ function ProductGallery({media}: {media: MediaImage[]}) {
             ...med.image,
             altText: med.alt || 'Product image',
           },
-        };
+        } as MediaEdge['node'];
 
         return (
           <div
             className={`${
               i % 3 === 0 ? 'md:col-span-2' : 'md:col-span-1'
             } snap-center card-image bg-white aspect-square md:w-full w-[80vw] shadow-sm rounded`}
-            key={med.id || data.image.id}
+            key={med.id || data.id}
           >
             <MediaFile
               tabIndex={0}
@@ -126,7 +128,7 @@ export default function ProductHandle() {
         <div className="md:sticky md:mx-auto max-w-xl md:max-w-[24rem] grid gap-8 p-0 md:p-6 md:px-0 top-[6rem] lg:top-[8rem] xl:top-[10rem]">
           <ProductOptions
             options={product.options}
-            selectedVariant={selectedVariant}
+            selectedVariant={selectedVariant as ProductVariant}
           />
           <Money
             withoutTrailingZeros

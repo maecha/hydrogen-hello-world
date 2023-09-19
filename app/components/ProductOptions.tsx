@@ -4,14 +4,17 @@ import {
   useSearchParams,
   useNavigation,
 } from '@remix-run/react';
-import type {ProductOption as ProductOptionType} from '@shopify/hydrogen/storefront-api-types';
+import type {
+  ProductOption,
+  ProductVariant,
+} from '@shopify/hydrogen/storefront-api-types';
 
 export default function ProductOptions({
   options,
   selectedVariant,
 }: {
-  options: ProductOptionType[];
-  selectedVariant: ProductOptionType;
+  options: ProductOption[];
+  selectedVariant: ProductVariant;
 }) {
   const {pathname, search} = useLocation();
   const [currentSearchParams] = useSearchParams();
