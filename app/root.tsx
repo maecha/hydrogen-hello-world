@@ -12,6 +12,7 @@ import {Layout} from './components/Layout';
 import {Seo} from '@shopify/hydrogen';
 import {defer} from '@shopify/remix-oxygen';
 import {DataFunctionArgs, LinksFunction} from '@shopify/remix-oxygen';
+import {useNonce} from '@shopify/hydrogen';
 import type {Shop} from '@shopify/hydrogen/storefront-api-types';
 
 // https://remix.run/docs/en/main/components/links
@@ -41,6 +42,7 @@ export async function loader({context}: DataFunctionArgs) {
 
 export default function App() {
   const data = useLoaderData<typeof loader>();
+  const nonce = useNonce();
   const {shop} = data.layout;
 
   return (
@@ -56,8 +58,8 @@ export default function App() {
         <Layout title={shop.name}>
           <Outlet />
         </Layout>
-        <ScrollRestoration />
-        <Scripts />
+        <ScrollRestoration nonce={nonce} />
+        <Scripts nonce={nonce} />
       </body>
     </html>
   );
