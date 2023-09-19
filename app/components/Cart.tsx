@@ -8,7 +8,11 @@ import type {
   ComponentizableCartLine,
 } from '@shopify/hydrogen/storefront-api-types';
 
-export function CartLineItems({linesObj}: {linesObj: BaseCartLineConnection}) {
+type CartLineItemsProps = {
+  linesObj: BaseCartLineConnection;
+};
+
+export function CartLineItems({linesObj}: CartLineItemsProps) {
   const lines = flattenConnection(linesObj);
   return (
     <div className="space-y-8">
@@ -19,7 +23,9 @@ export function CartLineItems({linesObj}: {linesObj: BaseCartLineConnection}) {
   );
 }
 
-function LineItem({lineItem}: {lineItem: CartLine | ComponentizableCartLine}) {
+type LineItemProps = {lineItem: CartLine | ComponentizableCartLine};
+
+function LineItem({lineItem}: LineItemProps) {
   const {merchandise, quantity} = lineItem;
 
   return (
@@ -50,7 +56,9 @@ function LineItem({lineItem}: {lineItem: CartLine | ComponentizableCartLine}) {
   );
 }
 
-function ItemRemoveButton({lineId}: {lineId: string}) {
+type ItemRemoveButtonProps = {lineId: string};
+
+function ItemRemoveButton({lineId}: ItemRemoveButtonProps) {
   return (
     <CartForm
       route="/cart"
@@ -98,7 +106,11 @@ function IconRemove() {
   );
 }
 
-export function CartSummary({cost}: {cost: CartCost}) {
+type CartSummaryProps = {
+  cost: CartCost;
+};
+
+export function CartSummary({cost}: CartSummaryProps) {
   return (
     <>
       <dl className="space-y-2">
@@ -123,7 +135,9 @@ export function CartSummary({cost}: {cost: CartCost}) {
   );
 }
 
-export function CartActions({checkoutUrl}: {checkoutUrl?: string}) {
+type CartActionsProps = {checkoutUrl?: string};
+
+export function CartActions({checkoutUrl}: CartActionsProps) {
   if (!checkoutUrl) return null;
 
   return (
@@ -132,7 +146,7 @@ export function CartActions({checkoutUrl}: {checkoutUrl?: string}) {
         href={checkoutUrl}
         className="bg-black text-white px-6 py-3 w-full rounded-md text-center font-medium"
       >
-        チェックアウトを続ける
+        チェックアウト
       </a>
     </div>
   );

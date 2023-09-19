@@ -6,7 +6,7 @@ module.exports = {
   server: './server.ts',
   tailwind: true,
   /**
-   * The following settings are required to deploy Hydrogen apps to Oxygen:
+   * 以下の設定は、HydrogenアプリをOxygenにデプロイするために必要な設定：
    */
   publicPath: (process.env.HYDROGEN_ASSET_BASE_URL ?? '/') + 'build/',
   assetsBuildDirectory: 'dist/client/build',

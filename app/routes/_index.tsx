@@ -10,7 +10,7 @@ type Collection = {
   image: ImageType;
 };
 
-// root.tsxで定義したmeta関数を呼び出す
+// `root.tsx`で定義したmeta関数を呼び出す
 export function meta() {
   return [
     {title: 'Hydrogen'},

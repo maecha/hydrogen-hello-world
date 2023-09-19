@@ -40,7 +40,9 @@ export async function loader({params, context, request}: DataFunctionArgs) {
   return json({product, selectedVariant, storeDomain});
 }
 
-function ProductGallery({media}: {media: MediaImage[]}) {
+type ProductGalleryProps = {media: MediaImage[]};
+
+function ProductGallery({media}: ProductGalleryProps) {
   if (!media.length) {
     return null;
   }
@@ -99,13 +101,15 @@ function ProductGallery({media}: {media: MediaImage[]}) {
   );
 }
 
-function ProductForm({variantId}: {variantId: string}) {
+type ProductFormProps = {variantId: string};
+
+function ProductForm({variantId}: ProductFormProps) {
   const lines = [{merchandiseId: variantId, quantity: 1}];
 
   return (
     <CartForm route="/cart" action={CartForm.ACTIONS.LinesAdd} inputs={{lines}}>
       <button className="bg-black text-white px-6 py-3 w-full rounded-md text-center font-medium max-w-[400px]">
-        Add to Bag
+        カートに入れる
       </button>
     </CartForm>
   );
@@ -121,7 +125,7 @@ export default function ProductHandle() {
       <div className="grid items-start gap-6 lg:gap-20 md:grid-cols-2 lg:grid-cols-3">
         <div className="grid md:grid-flow-row  md:p-0 md:overflow-x-hidden md:grid-cols-2 md:w-full lg:col-span-2">
           <div className="md:col-span-2 snap-center card-image aspect-square md:w-full w-[80vw] shadow rounded">
-            <h2>TODO Product Gallery</h2>
+            <h2>Product Gallery</h2>
             <ProductGallery media={product.media.nodes as MediaImage[]} />
           </div>
         </div>
@@ -157,7 +161,7 @@ export default function ProductHandle() {
               {product.vendor}
             </span>
           </div>
-          <h3>Product Options TODO</h3>
+          <h3>Product Options</h3>
           <div
             className="prose border-t border-gray-200 pt-6 text-black text-md"
             dangerouslySetInnerHTML={{__html: product.descriptionHtml}}

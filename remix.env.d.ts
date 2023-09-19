@@ -2,7 +2,7 @@
 /// <reference types="@shopify/remix-oxygen" />
 /// <reference types="@shopify/oxygen-workers-types" />
 
-// Enhance TypeScript's built-in typings.
+// TypeScriptの組み込み型定義を強化
 import '@total-typescript/ts-reset';
 
 import type {Storefront} from '@shopify/hydrogen';
@@ -11,12 +11,12 @@ import type {HydrogenCart} from '@shopify/hydrogen';
 
 declare global {
   /**
-   * A global `process` object is only available during build to access NODE_ENV.
+   * グローバルな`process`オブジェクトは、NODE_ENVにアクセスするためのビルド中にのみ利用可能
    */
   const process: {env: {NODE_ENV: 'production' | 'development'}};
 
   /**
-   * Declare expected Env parameter in fetch handler.
+   * フェッチハンドラ内で予期されるEnvパラメータの宣言
    */
   interface Env {
     SESSION_SECRET: string;
@@ -28,7 +28,7 @@ declare global {
 }
 
 /**
- * Declare local additions to `AppLoadContext` to include the session utilities we injected in `server.ts`.
+ * `server.ts`で注入したセッションユーティリティを含めるために、`AppLoadContext`へのローカルな追加を宣言
  */
 declare module '@shopify/remix-oxygen' {
   export interface AppLoadContext {

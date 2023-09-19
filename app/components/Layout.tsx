@@ -5,9 +5,14 @@ import {Await} from '@remix-run/react';
 import {Suspense, useEffect} from 'react';
 import {useFetchers} from '@remix-run/react';
 import {CartForm} from '@shopify/hydrogen';
-import type {Cart as CartType} from '@shopify/hydrogen/storefront-api-types';
+import type {Cart} from '@shopify/hydrogen/storefront-api-types';
 
-function CartDrawer({cart, close}: {cart: CartType; close: any}) {
+type CartDrawerProps = {
+  cart: Cart;
+  close: () => void;
+};
+
+function CartDrawer({cart, close}: CartDrawerProps) {
   return (
     <Suspense>
       <Await resolve={cart}>
@@ -28,13 +33,13 @@ function CartDrawer({cart, close}: {cart: CartType; close: any}) {
             ) : (
               <div className="flex flex-col space-y-7 justify-center items-center md:py-8 md:px-12 px-4 py-6 h-screen">
                 <h2 className="whitespace-pre-wrap max-w-prose font-bold text-4xl">
-                  Your cart is empty
+                  カートは空です。
                 </h2>
                 <button
                   onClick={close}
                   className="inline-block rounded-sm font-medium text-center py-3 px-6 max-w-xl leading-none bg-black text-white w-full"
                 >
-                  Continue shopping
+                  買い物を続ける
                 </button>
               </div>
             )}
@@ -45,7 +50,9 @@ function CartDrawer({cart, close}: {cart: CartType; close: any}) {
   );
 }
 
-function CartHeader({cart, openDrawer}: {cart: CartType; openDrawer: any}) {
+type CartHeaderProps = {cart: Cart; openDrawer: () => void};
+
+function CartHeader({cart, openDrawer}: CartHeaderProps) {
   return (
     <Suspense>
       <Await resolve={cart}>
@@ -78,11 +85,13 @@ function CartHeader({cart, openDrawer}: {cart: CartType; openDrawer: any}) {
   );
 }
 
-export function Layout({children, title}: {children: any; title: string}) {
+type LayoutProps = {children: React.ReactNode; title: string};
+
+export function Layout({children, title}: LayoutProps) {
   const {isOpen, openDrawer, closeDrawer} = useDrawer();
   const [root] = useMatches();
   const cart = root.data?.cart;
-  // Grab all the fetchers that are adding to cart
+  // カートに追加している全てのフェッチャーを取得する
   const fetchers = useFetchers();
   const addToCartFetchers = [];
 
@@ -96,7 +105,7 @@ export function Layout({children, title}: {children: any; title: string}) {
     }
   }
 
-  // When the fetchers array changes, open the drawer if there is an add to cart action
+  // fetchersの配列が変更されたとき、カートに追加のアクションがある場合はドロワーを開く
   useEffect(() => {
     if (isOpen || addToCartFetchers.length === 0) return;
     openDrawer();

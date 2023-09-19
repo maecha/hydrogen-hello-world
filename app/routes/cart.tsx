@@ -3,7 +3,10 @@ import {json, DataFunctionArgs} from '@shopify/remix-oxygen';
 import {CartForm} from '@shopify/hydrogen';
 import {CartLineItems, CartActions, CartSummary} from '~/components/Cart';
 import invariant from 'tiny-invariant';
-import type {Cart} from '@shopify/hydrogen/storefront-api-types';
+import type {
+  Cart,
+  BaseCartLineConnection,
+} from '@shopify/hydrogen/storefront-api-types';
 
 export async function action({request, context}: DataFunctionArgs) {
   const {cart} = context;
@@ -45,18 +48,23 @@ export async function loader({context}: DataFunctionArgs) {
 
 export default function Cart() {
   const {cart} = useLoaderData<typeof loader>();
+  const totalQuantity = cart?.totalQuantity;
 
-  if (cart?.totalQuantity && cart?.totalQuantity > 0) {
-    return (
-      <div className="w-full max-w-6xl mx-auto pb-12 grid md:grid-cols-2 md:items-start gap-8 md:gap-8 lg:gap-12">
-        <div className="flex-grow md:translate-y-4">
-          <CartLineItems linesObj={cart.lines} />
+  return (
+    <>
+      {totalQuantity && totalQuantity > 0 ? (
+        <div className="w-full max-w-6xl mx-auto pb-12 grid md:grid-cols-2 md:items-start gap-8 md:gap-8 lg:gap-12">
+          <div className="flex-grow md:translate-y-4">
+            <CartLineItems linesObj={cart.lines as BaseCartLineConnection} />
+          </div>
+          <div className="fixed left-0 right-0 bottom-0 md:sticky md:top-[65px] grid gap-6 p-4 md:px-6 md:translate-y-4 bg-gray-100 rounded-md w-full">
+            <CartSummary cost={cart.cost} />
+            <CartActions checkoutUrl={cart.checkoutUrl} />
+          </div>
         </div>
-        <div className="fixed left-0 right-0 bottom-0 md:sticky md:top-[65px] grid gap-6 p-4 md:px-6 md:translate-y-4 bg-gray-100 rounded-md w-full">
-          <CartSummary cost={cart.cost} />
-          <CartActions checkoutUrl={cart.checkoutUrl} />
-        </div>
-      </div>
-    );
-  }
+      ) : (
+        <p>カートに商品がありません。</p>
+      )}
+    </>
+  );
 }

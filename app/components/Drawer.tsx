@@ -1,13 +1,19 @@
 import {Dialog, Transition} from '@headlessui/react';
 import {Fragment, useState} from 'react';
 
+type DrawerProps = {
+  open: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+};
+
 /**
- * A Drawer component that opens on user click.
- * @param open - Boolean state. If `true`, then the drawer opens.
- * @param onClose - Function should set the open state.
- * @param children - React children node.
+ * ユーザーのクリックで開くドロワーコンポーネント。
+ * @param open - 真偽値の状態。`true`の場合、ドロワーが開きます。
+ * @param onClose - この関数はopenの状態を設定する必要があります。
+ * @param children - Reactの子ノード。
  */
-function Drawer({open, onClose, children}: any) {
+function Drawer({open, onClose, children}: DrawerProps) {
   return (
     <Transition appear show={open} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={onClose}>
@@ -41,7 +47,7 @@ function Drawer({open, onClose, children}: any) {
                       id="cart-contents"
                       className="whitespace-pre-wrap max-w-prose font-bold text-lg"
                     >
-                      Cart
+                      カート
                     </h2>
                     <button
                       type="button"

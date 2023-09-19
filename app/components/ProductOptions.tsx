@@ -9,14 +9,13 @@ import type {
   ProductVariant,
 } from '@shopify/hydrogen/storefront-api-types';
 
-export default function ProductOptions({
-  options,
-  selectedVariant,
-}: {
+type Props = {
   options: ProductOption[];
   selectedVariant: ProductVariant;
-}) {
-  const {pathname, search} = useLocation();
+};
+
+export default function ProductOptions({options, selectedVariant}: Props) {
+  const {pathname} = useLocation();
   const [currentSearchParams] = useSearchParams();
   const navigation = useNavigation();
 
@@ -36,8 +35,8 @@ export default function ProductOptions({
     return defaultParams;
   })();
 
-  // Update the in-flight request data from the 'navigation' (if available)
-  // to create an optimistic UI that selects a link before the request is completed
+  // 'navigation'からの情報（もし利用可能な場合）を使用して、
+  // リクエストが完了する前にリンクを選択する楽観的なUIを作成するために、進行中のリクエストデータを更新する
   const searchParams = navigation.location
     ? new URLSearchParams(navigation.location.search)
     : paramsWithDefaults;
@@ -49,7 +48,7 @@ export default function ProductOptions({
           return;
         }
 
-        // get the currently selected option value
+        // 現在選択されているオプションの値を取得する
         const currentOptionVal = searchParams.get(option.name);
         return (
           <div

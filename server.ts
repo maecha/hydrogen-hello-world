@@ -1,4 +1,4 @@
-// Virtual entry point for the app
+// アプリの仮想エントリーポイント
 import * as remixBuild from '@remix-run/dev/server-build';
 import {
   cartSetIdDefault,
@@ -16,7 +16,7 @@ import {
 } from '@shopify/remix-oxygen';
 
 /**
- * Export a fetch handler in module format.
+ * モジュール形式でフェッチハンドラをエクスポートする
  */
 export default {
   async fetch(
@@ -26,7 +26,7 @@ export default {
   ): Promise<Response> {
     try {
       /**
-       * Open a cache instance in the worker and a custom session instance.
+       * ワーカー内でキャッシュインスタンスとカスタムセッションインスタンスを開く
        */
       if (!env?.SESSION_SECRET) {
         throw new Error('SESSION_SECRET environment variable is not set');
@@ -39,7 +39,7 @@ export default {
       ]);
 
       /**
-       * Create Hydrogen's Storefront client.
+       * Hydrogen Storefront クライアントを作成.
        */
       const {storefront} = createStorefrontClient({
         cache,
@@ -56,13 +56,13 @@ export default {
         storefront,
         getCartId: cartGetIdDefault(request.headers),
         setCartId: cartSetIdDefault({
-          maxage: 60 * 60 * 24 * 365, // 1 year expiry
+          maxage: 60 * 60 * 24 * 365, // 有効期限1年
         }),
       });
 
       /**
-       * Create a Remix request handler and pass
-       * Hydrogen's Storefront client to the loader context.
+       * Remixのリクエストハンドラを作成し、
+       * Hydrogenのストアフロントクライアントをローダーコンテキストに渡します。
        */
       const handleRequest = createRequestHandler({
         build: remixBuild,
@@ -74,9 +74,9 @@ export default {
 
       if (response.status === 404) {
         /**
-         * Check for redirects only when there's a 404 from the app.
-         * If the redirect doesn't exist, then `storefrontRedirect`
-         * will pass through the 404 response.
+         * アプリから404が返された場合のみ、リダイレクトをチェックします。
+         * もしリダイレクトが存在しない場合、`storefrontRedirect`は
+         * 404のレスポンスをそのまま通過させます。
          */
         return storefrontRedirect({request, response, storefront});
       }
@@ -91,9 +91,9 @@ export default {
 };
 
 /**
- * This is a custom session implementation for your Hydrogen shop.
- * Feel free to customize it to your needs, add helper methods, or
- * swap out the cookie-based implementation with something else!
+ * これはあなたのHydrogenショップ用のカスタムセッション実装です。
+ * お気軽にカスタマイズして、ヘルパーメソッドを追加するか、
+ * クッキーベースの実装を別のものと交換してください！
  */
 export class HydrogenSession {
   constructor(

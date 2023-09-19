@@ -4,7 +4,7 @@ import {getPaginationVariables} from '@shopify/hydrogen';
 import ProductGrid from '../components/ProductGrid';
 import type {Collection} from '@shopify/hydrogen/storefront-api-types';
 
-// root.tsxで定義したmeta関数を呼び出す
+// `root.tsx`で定義したmeta関数を呼び出す
 export function meta({data}: any) {
   return [
     {title: data?.collection?.title ?? 'Collection'},
@@ -37,12 +37,12 @@ export async function loader({params, context, request}: DataFunctionArgs) {
     },
   );
 
-  // Handle 404 errors
+  // 404エラーの処理
   if (!collection) {
     throw new Response(null, {status: 404});
   }
 
-  // json is a Remix utility for creating application/json responses
+  // jsonは、application/jsonのレスポンスを作成するためのRemixユーティリティです
   // https://remix.run/docs/en/v1/utils/json
   return json({
     collection,
@@ -70,7 +70,7 @@ export default function Collection() {
         )}
       </header>
       <ProductGrid
-        collection={collection}
+        collection={collection as Collection}
         url={`/collections/${collection.handle}`}
       />
     </>
