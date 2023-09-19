@@ -14,6 +14,8 @@ import {defer} from '@shopify/remix-oxygen';
 import {DataFunctionArgs, LinksFunction} from '@shopify/remix-oxygen';
 import {useNonce} from '@shopify/hydrogen';
 import {LAYOUT_QUERY} from '~/lib/queries/root';
+// TODO: https://shopify.dev/docs/custom-storefronts/hydrogen/migrate-hydrogen-remix#step-12-add-a-404-page
+// import {useCatch} from '@remix-run/react';
 import type {Shop} from '@shopify/hydrogen/storefront-api-types';
 
 // https://remix.run/docs/en/main/components/links
