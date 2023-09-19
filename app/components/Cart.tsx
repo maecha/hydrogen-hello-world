@@ -1,9 +1,14 @@
 import {Link} from '@remix-run/react';
 import {flattenConnection, Image, Money} from '@shopify/hydrogen-react';
 import {CartForm} from '@shopify/hydrogen';
-import type {CartCost as CartCostType} from '@shopify/hydrogen/storefront-api-types';
+import type {
+  CartCost,
+  BaseCartLineConnection,
+  CartLine,
+  ComponentizableCartLine,
+} from '@shopify/hydrogen/storefront-api-types';
 
-export function CartLineItems({linesObj}: {linesObj: any}) {
+export function CartLineItems({linesObj}: {linesObj: BaseCartLineConnection}) {
   const lines = flattenConnection(linesObj);
   return (
     <div className="space-y-8">
@@ -14,7 +19,7 @@ export function CartLineItems({linesObj}: {linesObj: any}) {
   );
 }
 
-function LineItem({lineItem}: {lineItem: any}) {
+function LineItem({lineItem}: {lineItem: CartLine | ComponentizableCartLine}) {
   const {merchandise, quantity} = lineItem;
 
   return (
@@ -23,7 +28,11 @@ function LineItem({lineItem}: {lineItem: any}) {
         to={`/products/${merchandise.product.handle}`}
         className="flex-shrink-0"
       >
-        <Image data={merchandise.image} width={110} height={110} />
+        {merchandise.image ? (
+          <Image data={merchandise.image} width={110} height={110} />
+        ) : (
+          <p>商品画像がありません。</p>
+        )}
       </Link>
       <div className="flex-1">
         <Link
@@ -34,19 +43,19 @@ function LineItem({lineItem}: {lineItem: any}) {
         </Link>
         <div className="text-gray-800 text-sm">{merchandise.title}</div>
         <div className="text-gray-800 text-sm">Qty: {quantity}</div>
-        <ItemRemoveButton lineIds={[lineItem.id]} />
+        <ItemRemoveButton lineId={lineItem.id} />
       </div>
       <Money data={lineItem.cost.totalAmount} />
     </div>
   );
 }
 
-function ItemRemoveButton({lineIds}: {lineIds: any}) {
+function ItemRemoveButton({lineId}: {lineId: string}) {
   return (
     <CartForm
       route="/cart"
       action={CartForm.ACTIONS.LinesRemove}
-      inputs={{lineIds}}
+      inputs={{lineIds: [lineId]}}
     >
       <button
         className="bg-white border-black text-black hover:text-white hover:bg-black rounded-md font-small text-center my-2 max-w-xl leading-none border w-10 h-10 flex items-center justify-center"
@@ -66,7 +75,7 @@ function IconRemove() {
       viewBox="0 0 20 20"
       className="w-5 h-5"
     >
-      <title>Remove</title>
+      <title>削除</title>
       <path
         d="M4 6H16"
         strokeWidth="1.25"
@@ -89,12 +98,12 @@ function IconRemove() {
   );
 }
 
-export function CartSummary({cost}: {cost: CartCostType}) {
+export function CartSummary({cost}: {cost: CartCost}) {
   return (
     <>
       <dl className="space-y-2">
         <div className="flex items-center justify-between">
-          <dt>Subtotal</dt>
+          <dt>小計</dt>
           <dd>
             {cost?.subtotalAmount?.amount ? (
               <Money data={cost?.subtotalAmount} />
@@ -105,9 +114,9 @@ export function CartSummary({cost}: {cost: CartCostType}) {
         </div>
         <div className="flex items-center justify-between">
           <dt className="flex items-center">
-            <span>Shipping estimate</span>
+            <span>配送料の見積もり</span>
           </dt>
-          <dd className="text-green-600">Free and carbon neutral</dd>
+          <dd className="text-green-600">送料無料、カーボンニュートラル</dd>
         </div>
       </dl>
     </>
@@ -123,7 +132,7 @@ export function CartActions({checkoutUrl}: {checkoutUrl?: string}) {
         href={checkoutUrl}
         className="bg-black text-white px-6 py-3 w-full rounded-md text-center font-medium"
       >
-        Continue to Checkout
+        チェックアウトを続ける
       </a>
     </div>
   );

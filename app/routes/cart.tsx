@@ -1,12 +1,11 @@
 import {useLoaderData} from '@remix-run/react';
-import {
-  json,
-  DataFunctionArgs as DataFunctionArgsType,
-} from '@shopify/remix-oxygen';
+import {json, DataFunctionArgs} from '@shopify/remix-oxygen';
 import {CartForm} from '@shopify/hydrogen';
 import {CartLineItems, CartActions, CartSummary} from '~/components/Cart';
+import invariant from 'tiny-invariant';
+import type {Cart} from '@shopify/hydrogen/storefront-api-types';
 
-export async function action({request, context}: DataFunctionArgsType) {
+export async function action({request, context}: DataFunctionArgs) {
   const {cart} = context;
 
   const formData = await request.formData();
@@ -32,13 +31,13 @@ export async function action({request, context}: DataFunctionArgsType) {
     return json(result, {status: 200});
   }
 
-  // The Cart ID might change after each mutation, so update it each time.
+  // ミューテーションの後でカートIDが変更されるかもしれないので毎回更新する
   const headers = cart.setCartId(result.cart.id);
 
   return json(result, {status: 200, headers});
 }
 
-export async function loader({context}: DataFunctionArgsType) {
+export async function loader({context}: DataFunctionArgs) {
   const {cart} = context;
   const cartData = await cart.get();
   return json({cart: cartData});
