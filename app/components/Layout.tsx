@@ -2,7 +2,7 @@ import {Drawer, useDrawer} from '~/components/Drawer';
 import {CartLineItems, CartActions, CartSummary} from '~/components/Cart';
 import {useMatches} from '@remix-run/react';
 import {Await} from '@remix-run/react';
-import {Suspense, useEffect} from 'react';
+import {Suspense, useEffect, useMemo} from 'react';
 import {useFetchers} from '@remix-run/react';
 import {CartForm} from '@shopify/hydrogen';
 import type {Cart} from '@shopify/hydrogen/storefront-api-types';
@@ -90,20 +90,25 @@ type LayoutProps = {children: React.ReactNode; title: string};
 export function Layout({children, title}: LayoutProps) {
   const {isOpen, openDrawer, closeDrawer} = useDrawer();
   const [root] = useMatches();
-  const cart = root.data?.cart;
+  const cart = root.data?.cart as Cart;
   // カートに追加している全てのフェッチャーを取得する
   const fetchers = useFetchers();
-  const addToCartFetchers = [];
 
-  for (const fetcher of fetchers) {
-    const formData = fetcher.submission?.formData;
-    if (formData) {
-      const formInputs = CartForm.getFormInput(formData);
-      if (formInputs.action === CartForm.ACTIONS.LinesAdd) {
-        addToCartFetchers.push(fetcher);
+  const addToCartFetchers = useMemo(() => {
+    const cartFetchers = [];
+
+    for (const fetcher of fetchers) {
+      const formData = fetcher.submission?.formData;
+      if (formData) {
+        const formInputs = CartForm.getFormInput(formData);
+        if (formInputs.action === CartForm.ACTIONS.LinesAdd) {
+          cartFetchers.push(fetcher);
+        }
       }
     }
-  }
+
+    return cartFetchers;
+  }, [fetchers]);
 
   // fetchersの配列が変更されたとき、カートに追加のアクションがある場合はドロワーを開く
   useEffect(() => {
