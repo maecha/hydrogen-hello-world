@@ -9,6 +9,7 @@ import type {
   MediaEdge,
 } from '@shopify/hydrogen/storefront-api-types';
 import ProductOptions from '~/components/ProductOptions';
+import {PRODUCT_QUERY} from '~/lib/queries/product';
 
 export async function loader({params, context, request}: DataFunctionArgs) {
   const {handle} = params;
@@ -77,7 +78,7 @@ function ProductGallery({media}: ProductGalleryProps) {
           __typename: typeNameMap[med.mediaContentType] || typeNameMap.IMAGE,
           image: {
             ...med.image,
-            altText: med.alt || 'Product image',
+            altText: med.alt || '商品画像',
           },
         } as MediaEdge['node'] & {image: MediaImage};
 
@@ -125,7 +126,7 @@ export default function ProductHandle() {
       <div className="grid items-start gap-6 lg:gap-20 md:grid-cols-2 lg:grid-cols-3">
         <div className="grid md:grid-flow-row  md:p-0 md:overflow-x-hidden md:grid-cols-2 md:w-full lg:col-span-2">
           <div className="md:col-span-2 snap-center card-image aspect-square md:w-full w-[80vw] shadow rounded">
-            <h2>Product Gallery</h2>
+            <h2>商品ギャラリー</h2>
             <ProductGallery media={product.media.nodes as MediaImage[]} />
           </div>
         </div>
@@ -161,7 +162,7 @@ export default function ProductHandle() {
               {product.vendor}
             </span>
           </div>
-          <h3>Product Options</h3>
+          <h3>商品オプション</h3>
           <div
             className="prose border-t border-gray-200 pt-6 text-black text-md"
             dangerouslySetInnerHTML={{__html: product.descriptionHtml}}
@@ -171,93 +172,3 @@ export default function ProductHandle() {
     </section>
   );
 }
-
-const PRODUCT_QUERY = `#graphql
-  query product($handle: String!, $selectedOptions: [SelectedOptionInput!]!) {
-    product(handle: $handle) {
-      id
-      title
-      handle
-      vendor
-      descriptionHtml
-      media(first: 10) {
-        nodes {
-          ... on MediaImage {
-            mediaContentType
-            image {
-              id
-              url
-              altText
-              width
-              height
-            }
-          }
-          ... on Model3d {
-            id
-            mediaContentType
-            sources {
-              mimeType
-              url
-            }
-          }
-        }
-      }
-      options {
-        name,
-        values
-      }
-      selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions) {
-        id
-        availableForSale
-        selectedOptions {
-          name
-          value
-        }
-        image {
-          id
-          url
-          altText
-          width
-          height
-        }
-        price {
-          amount
-          currencyCode
-        }
-        compareAtPrice {
-          amount
-          currencyCode
-        }
-        sku
-        title
-        unitPrice {
-          amount
-          currencyCode
-        }
-        product {
-          title
-          handle
-        }
-      }
-      variants(first: 1) {
-        nodes {
-          id
-          title
-          availableForSale
-          price {
-            currencyCode
-            amount
-          }
-          compareAtPrice {
-            currencyCode
-            amount
-          }
-          selectedOptions {
-            name
-            value
-          }
-        }
-      }
-    }
-  }
-`;

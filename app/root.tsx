@@ -13,6 +13,7 @@ import {Seo} from '@shopify/hydrogen';
 import {defer} from '@shopify/remix-oxygen';
 import {DataFunctionArgs, LinksFunction} from '@shopify/remix-oxygen';
 import {useNonce} from '@shopify/hydrogen';
+import {LAYOUT_QUERY} from '~/lib/queries/root';
 import type {Shop} from '@shopify/hydrogen/storefront-api-types';
 
 // https://remix.run/docs/en/main/components/links
@@ -64,12 +65,3 @@ export default function App() {
     </html>
   );
 }
-
-const LAYOUT_QUERY = `#graphql
-  query layout {
-    shop {
-      name
-      description
-    }
-  }
-`;
