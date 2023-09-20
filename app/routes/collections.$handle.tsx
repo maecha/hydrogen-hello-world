@@ -1,12 +1,12 @@
 import {useLoaderData} from '@remix-run/react';
-import {json, DataFunctionArgs} from '@shopify/remix-oxygen';
+import {json, DataFunctionArgs, V2_MetaArgs} from '@shopify/remix-oxygen';
 import {getPaginationVariables} from '@shopify/hydrogen';
 import ProductGrid from '../components/ProductGrid';
 import type {Collection} from '@shopify/hydrogen/storefront-api-types';
 import {COLLECTION_QUERY} from '~/lib/queries/collection';
 
 // `root.tsx`で定義したmeta関数を呼び出す
-export function meta({data}: any) {
+export function meta({data}: V2_MetaArgs) {
   return [
     {title: data?.collection?.title ?? 'Collection'},
     {description: data?.collection?.description},
