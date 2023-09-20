@@ -1,11 +1,11 @@
-# Hydrogen template: Hello World
+# Hydrogen テンプレート: Hydrogen Hello World
 
-Hydrogen is Shopify’s stack for headless commerce. Hydrogen is designed to dovetail with [Remix](https://remix.run/), Shopify’s full stack web framework. This template contains a **minimal setup** of components, queries and tooling to get started with Hydrogen.
+Shopify のヘッドレスコマース用フルスタック Web フレームワーク[Hydrogen(https://hydrogen.shopify.dev/)](<[Remix](https://remix.run/)>)のスターターテンプレートです。このスターターにはコンポーネント、クエリ、ツールの最小限のセットアップが含まれています。
 
 [Check out Hydrogen docs](https://shopify.dev/custom-storefronts/hydrogen)
-[Get familiar with Remix](https://remix.run/docs/en/v1)
+[Get familiar with Remix](https://remix.run/docs/en/2.0.0)
 
-## What's included
+## 含まれるもの
 
 - Remix
 - Hydrogen
@@ -17,25 +17,25 @@ Hydrogen is Shopify’s stack for headless commerce. Hydrogen is designed to dov
 - TypeScript and JavaScript flavors
 - Minimal setup of components and routes
 
-## Getting started
+## はじめに
 
-**Requirements:**
+**必要条件:**
 
-- Node.js version 16.14.0 or higher
+- Node.js のバージョンは 16.14.0 以上をご利用ください
 
 ```bash
-npm create @shopify/hydrogen@latest -- --template hello-world
+npm create @shopify/hydrogen@latest -- --template hydrogen-hello-world
 ```
 
-Remember to update `.env` with your shop's domain and Storefront API token!
+ご自身のショップのドメインと Storefront API トークンを`.env`に反映してください。
 
-## Building for production
+## 本番環境用のビルド
 
 ```bash
 npm run build
 ```
 
-## Local development
+## 開発環境の実行
 
 ```bash
 npm run dev
