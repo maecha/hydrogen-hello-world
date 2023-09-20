@@ -7,7 +7,7 @@ Shopify のヘッドレスコマース用フルスタック Web フレームワ�
 
 ## 開発ツール
 
-- Hydrogen(v2)
+- Hydrogen (v2)
 - Remix
 - Shopify CLI
 - ESLint
