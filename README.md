@@ -21,7 +21,7 @@ Shopify のヘッドレスコマース用フルスタック Web フレームワ�
 
 **必要条件:**
 
-- Node.js のバージョンは 16.14.0 以上をご利用ください
+- Node.js のバージョンは 18.16.0 以上をご利用ください
 
 ```bash
 npm create @shopify/hydrogen@latest -- --template hydrogen-hello-world
