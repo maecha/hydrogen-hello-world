@@ -2,8 +2,8 @@
 
 Shopify のヘッドレスコマース用フルスタック Web フレームワーク[Hydrogen(https://hydrogen.shopify.dev/)](<[Remix](https://remix.run/)>)のスターターテンプレートです。このスターターにはコンポーネント、クエリ、ツールの最小限のセットアップが含まれています。
 
-[Check out Hydrogen docs](https://shopify.dev/custom-storefronts/hydrogen)
-[Get familiar with Remix](https://remix.run/docs/en/2.0.0)
+- [Check out Hydrogen docs](https://shopify.dev/custom-storefronts/hydrogen)
+- [Get familiar with Remix](https://remix.run/docs/en/2.0.0)
 
 ## 含まれるもの
 
