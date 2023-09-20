@@ -1,13 +1,13 @@
 # Hydrogen テンプレート: Hydrogen Hello World
 
-Shopify のヘッドレスコマース用フルスタック Web フレームワーク Hydrogen(Remix) のスターターテンプレートです。このスターターにはコンポーネント、クエリ、ツールの最小限のセットアップが含まれています。
+Shopify のヘッドレスコマース用フルスタック Web フレームワーク Hydrogen (Remix) のスターターテンプレートです。このスターターにはコンポーネント、クエリ、ツールの最小限のセットアップが含まれています。
 
 - [Hydrogen ドキュメント](https://shopify.dev/custom-storefronts/hydrogen)
 - [Remix ドキュメント](https://remix.run/docs/en/2.0.0)
 
 ## 開発ツール
 
-- Hydrogen
+- Hydrogen(v2)
 - Remix
 - Shopify CLI
 - ESLint
