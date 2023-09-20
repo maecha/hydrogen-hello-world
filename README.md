@@ -5,17 +5,17 @@ Shopify のヘッドレスコマース用フルスタック Web フレームワ�
 - [Hydrogen ドキュメント](https://shopify.dev/custom-storefronts/hydrogen)
 - [Remix ドキュメント](https://remix.run/docs/en/2.0.0)
 
-## 含まれるもの
+## 開発ツール
 
-- Remix
 - Hydrogen
-- Oxygen
+- Remix
 - Shopify CLI
 - ESLint
 - Prettier
-- GraphQL generator
-- TypeScript and JavaScript flavors
-- Minimal setup of components and routes
+- TypeScript
+- PostCSS
+- Headless UI
+- Vitest
 
 ## はじめに
 
