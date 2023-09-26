@@ -38,7 +38,7 @@ export async function loader({context}: DataFunctionArgs) {
   const {cart} = context;
 
   return defer({
-    cart: await cart.get(),
+    cart: cart.get(),
     layout: await context.storefront.query<{shop: Shop}>(LAYOUT_QUERY),
   });
 }
